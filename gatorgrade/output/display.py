@@ -12,3 +12,18 @@ def display_tldr(console: Console, chosen_command: str = None) -> None:
         "fancy": "poetry run execexam <path-to-project> <path-to-tests> <--fancy>/<--no-fancy>",
         "verbose": "poetry run execexam <path-to-project> <path-to-tests> <--verbose>/<--no-verbose>",
     }
+    # if a command is provided, display the description of that command
+    if chosen_command:
+        if chosen_command in commands:
+            console.print(f"{chosen_command}: {commands[chosen_command]}")
+        # if the command is not in the list, display an error message
+        else:
+            console.print(f"Error: Unknown command '{chosen_command}'")
+            console.print("\nAvailable commands:")
+            # display all the commands
+            for command in commands:
+                console.print(f"  - {command}")
+    # if a command is provided, display the description of that command
+    else:
+        for command, description in commands.items():
+            console.print(f"{command}: {description}")
