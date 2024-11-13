@@ -1,29 +1,42 @@
+"""Display results from the TLDR."""
 from rich.console import Console
 
 
-def display_tldr(console: Console, chosen_command: str = None) -> None:
+def display_tldr(console: Console) -> None:
     """Display a list of example commands and their descriptions."""
-    # a dictionaly of commands and their descriptions
+    console.print(
+        "[bold yellow]Too Lazy; Didn't Read: Example Commands[/bold yellow]\n"
+    )
+
     commands = {
-        "mark": "poetry run execexam <path-to-project> <path-to-tests> --maxfail",
-        "report": "poetry run execexam <path-to-project> <path-to-tests> --report <report_type>/<all>",
-        "advice-model": "poetry run execexam <path-to-project> <path-to-tests> --advice-model <model> --advice-method <method>",
-        "debug": "poetry run execexam <path-to-project> <path-to-tests> <--debug>/<--no-debug>",
-        "fancy": "poetry run execexam <path-to-project> <path-to-tests> <--fancy>/<--no-fancy>",
-        "verbose": "poetry run execexam <path-to-project> <path-to-tests> <--verbose>/<--no-verbose>",
+        "1": {
+            "command": "",
+            "description": "",
+        },
+        "2": {
+            "command": "",
+            "description": "",
+        },
+        "3": {
+            "command": "",
+            "description": "",
+        },
+        "4": {
+            "command": "",
+            "description": "",
+        }
     }
-    # if a command is provided, display the description of that command
-    if chosen_command:
-        if chosen_command in commands:
-            console.print(f"{chosen_command}: {commands[chosen_command]}")
-        # if the command is not in the list, display an error message
-        else:
-            console.print(f"Error: Unknown command '{chosen_command}'")
-            console.print("\nAvailable commands:")
-            # display all the commands
-            for command in commands:
-                console.print(f"  - {command}")
-    # if a command is provided, display the description of that command
-    else:
-        for command, description in commands.items():
-            console.print(f"{command}: {description}")
+
+    for command_name, command_info in commands.items():
+        console.print(f"[bold green]{command_name}[/bold green]")
+        console.print(
+            f"[bold white]Command:[/bold white] [bold cyan]{command_info['command']}[/bold cyan]"
+        )
+        console.print(
+            f"[bold white]Description:[/bold white] {command_info['description']}"
+        )
+        console.print()
+
+    console.print(
+        "\n[bold yellow]help:[/bold yellow] Use [bold yellow]--help[/bold yellow] to see more options."
+    )
