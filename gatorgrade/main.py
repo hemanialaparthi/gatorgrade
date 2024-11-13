@@ -3,12 +3,14 @@
 import sys
 from pathlib import Path
 from typing import Tuple
+from typing_extensions import Annotated, Optional
 
 import typer
 from rich.console import Console
 
 from gatorgrade.input.parse_config import parse_config
 from gatorgrade.output.output import run_checks
+from gatorgrade.output import display
 
 # create an app for the Typer-based CLI
 
@@ -31,9 +33,24 @@ FILE = "gatorgrade.yml"
 FAILURE = 1
 
 
+def tldr_callback(value: bool) -> None:
+    """Display a list of example commands and their descriptions."""
+    if value:
+        display.display_tldr(console)
+        raise typer.Exit()
+
+
 @app.callback(invoke_without_command=True)
 def gatorgrade(
     ctx: typer.Context,
+    tldr: Annotated[
+        Optional[bool],
+        typer.Option(
+            "--tldr",
+            callback=tldr_callback,
+            help="Display summary of commands",
+        ),
+    ] = False,
     filename: Path = typer.Option(FILE, "--config", "-c", help="Name of the yml file."),
     report: Tuple[str, str, str] = typer.Option(
         (None, None, None),
@@ -48,6 +65,9 @@ def gatorgrade(
 ):
     """Run the GatorGrader checks in the specified gatorgrade.yml file."""
     # if ctx.subcommand is None then this means
+    if tldr:
+        display.display_tldr(console)
+        raise typer.Exit()
     # that, by default, gatorgrade should run in checking mode
     if ctx.invoked_subcommand is None:
         # parse the provided configuration file
