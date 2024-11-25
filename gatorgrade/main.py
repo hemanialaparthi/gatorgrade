@@ -45,6 +45,12 @@ def gatorgrade(
             3. the name of the file or environment variable\
             4. use 'env md GITHUB_STEP_SUMMARY' to create GitHub job summary in GitHub Action",
     ),
+    failing_first: bool = typer.Option(
+        None,
+        "--failing-first",
+        "-f",
+        help="Sort the checks to see the first failing check first.",
+    )
 ):
     """Run the GatorGrader checks in the specified gatorgrade.yml file."""
     # if ctx.subcommand is None then this means
